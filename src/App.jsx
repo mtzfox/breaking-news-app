@@ -2,7 +2,6 @@ import React from 'react'
 import Item from './Item'
 import { Container, Segment, Form, List, Pagination } from 'semantic-ui-react'
 import './App.css'
-import { render } from 'react-dom';
 
 async function searchNews(q, offset) {
   q = encodeURIComponent(q);
@@ -32,6 +31,7 @@ export default function App() {
     setPage(1)
     setOffset(0);
     searchNews(query).then(setList);
+    console.log([...list]);
   };
   const handlePageChange = (e, { activePage }) => {
     e.preventDefault();
@@ -60,36 +60,37 @@ export default function App() {
             </Form>
           </Segment>
           <Segment className="results" style={{overflow:'auto'}}>
-          {!list
-            ? null
-            : list.length === 0
-              ? <p><i>No results</i></p>
-              : 
-              <>
-              <List relaxed>
-              <span style={{paddingLeft:"10px"}}>Results {offset+1} - {offset+10}</span>
-                {list.map((props, i) => (
-                  <Item key={i} item={props} />
-                ))}
-              </List>
-              <Pagination
-                boundaryRange={0}
-                activePage={page}
-                ellipsisItem={null}
-                firstItem={null}
-                lastItem={null}
-                siblingRange={1}
-                totalPages={10}
-                onPageChange={handlePageChange}
-              />
-              <span style={{paddingLeft:"10px"}}>Page {page}</span>
-              </>
-          }
+          
+              
+              
+              {!list
+                ? null
+                : list.length === 0
+                  ? <p><i>No results</i></p>
+                  : 
+                <>  
+                <span style={{paddingLeft:"10px"}}>Results {offset+1} - {offset+10}</span>
+                <List relaxed>
+                  {list.map((props, i) => (
+                    <Item key={i} item={props} />
+                  ))}
+                </List>
+                <Pagination
+                  boundaryRange={0}
+                  activePage={page}
+                  ellipsisItem={null}
+                  firstItem={null}
+                  lastItem={null}
+                  siblingRange={1}
+                  totalPages={10}
+                  onPageChange={handlePageChange}
+                />
+                <span style={{paddingLeft:"10px"}}>Page {page}</span>
+                </>
+              }
           </Segment>
         </Segment.Group>
       </Container>
     </div>
   )
 }
-
-

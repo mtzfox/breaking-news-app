@@ -1,6 +1,6 @@
 import React from 'react'
 import './index.css'
-import { Segment, List, Grid, Image, Card, CardDescription } from 'semantic-ui-react'
+import { Segment, List, Grid, Image, Card } from 'semantic-ui-react'
 
 export default function Item({ item }) {
 
