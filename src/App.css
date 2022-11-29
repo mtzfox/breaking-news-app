@@ -23,6 +23,28 @@
 .search-result {
   border: 1px solid #dededf;
 }
+.search-result h3 {
+  margin-top: 0.5rem;
+}
+
+.thumbnail {
+  width: 100%;
+  text-align: center;
+}
+@media screen and (min-width: 780px) {
+  .meta {
+    border-left: 1px solid #dededf;
+  }
+  .search-result .item {
+    /* background-color: #cce2ff; */
+    border-right: 1px solid #dededf;
+  }
+}
+@media screen and (max-width: 780px) {
+  .search-result .item {
+    border-bottom: 1px solid #dededf;
+  }
+}
 
 /* button {
   background: #17f;

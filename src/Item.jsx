@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Link} from 'react';
 import './index.css';
 import { Segment, List, Grid, Image, Card } from 'semantic-ui-react';
 
@@ -24,19 +24,22 @@ const Item = ({ name, url, image, description, provider, category, datePublished
 							mobile={2}
 							tablet={3}
 							computer={2}
-							style={{ backgroundColor: '#cce2ff' }}
+              verticalAlign='middle'
 						>
 								<Image
                   className='thumbnail'
-									verticalAlign='middle'
 									size='small'
 									bordered
 									rounded
-									src={`${image.thumbnail.contentUrl}`}
+                  as='img'
+                  floated='left'
+									src={image?.thumbnail?.contentUrl}
 								/>
 						</Grid.Column>
 
-						<Grid.Column mobile={16} tablet={9} computer={10}>
+						<Grid.Column mobile={14} tablet={9} computer={10}>
+            
+							<h4>{formatDate(datePublished)}</h4>
 							<h3 className='title'>
 								<a href={url} target='_blank'>
 									{name}
@@ -51,18 +54,17 @@ const Item = ({ name, url, image, description, provider, category, datePublished
 							mobile={16}
 							tablet={4}
 							computer={4}
-							style={{ borderLeft: '1px solid #dededf' }}
+              verticalAlign='middle'
 						>
 							<Card className='meta'>
-								<Card.Content>
-									<strong>{formatDate(datePublished)}</strong>
-								</Card.Content>
+								
 								<Card.Content className='provider'>
 									<>
 										{provider[0].image?.thumbnail && (
 											<img
 												className='provider-thumbnail'
 												alt=''
+                        as='img'
 												src={
 													provider[0].image.thumbnail.contentUrl +
 													'&w=16&h=16'
