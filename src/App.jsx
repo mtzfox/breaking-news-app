@@ -31,7 +31,6 @@ export default function App() {
     setPage(1)
     setOffset(0);
     searchNews(query).then(setList);
-    console.log([...list]);
   };
   const handlePageChange = (e, { activePage }) => {
     e.preventDefault();
@@ -40,6 +39,7 @@ export default function App() {
     setOffset(offset);
     searchNews(query, offset).then(setList);
   }
+  console.log(list);
   return (
     <div className="app">
       <Container className='container'>
@@ -59,7 +59,7 @@ export default function App() {
               </Form.Group>  
             </Form>
           </Segment>
-          <Segment className="results" style={{overflow:'auto'}}>
+          <Segment className="results">
           
               
               
@@ -71,8 +71,8 @@ export default function App() {
                 <>  
                 <span style={{paddingLeft:"10px"}}>Results {offset+1} - {offset+10}</span>
                 <List relaxed>
-                  {list.map((props, i) => (
-                    <Item key={i} item={props} />
+                  {list.map(({ObjectId, ...props}) => (
+                    <Item key={ObjectId} {...props} />
                   ))}
                 </List>
                 <Pagination
