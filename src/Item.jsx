@@ -32,7 +32,7 @@ const Item = ({ name, url, image, description, provider, category, datePublished
 									size='small'
 									bordered
 									rounded
-									src={image?.thumbnail?.contentUrl}
+									src={`${image.thumbnail.contentUrl}`}
 								/>
 						</Grid.Column>
 
