@@ -1,12 +1,13 @@
 import React from 'react'
 import Item from './Item'
-import { Container, Segment, Form, List, Pagination } from 'semantic-ui-react'
+import { Container, Segment, Form, Select, List, Pagination } from 'semantic-ui-react'
 import './App.css'
 
-async function searchNews(q, offset) {
+async function searchNews(q, time, offset) {
   q = encodeURIComponent(q);
+  time = time || '';
   offset = offset || 0;
-  const response = await fetch(`https://bing-news-search1.p.rapidapi.com/news/search?safeSearch=Off&textFormat=Raw&freshness=Day&setLang=EN&count=10&q=${q}&offset=${offset}`, {
+  const response = await fetch(`https://bing-news-search1.p.rapidapi.com/news/search?safeSearch=Off&textFormat=Raw&freshness=${time}&setLang=EN&count=10&q=${q}&offset=${offset}`, {
     "method": "GET",
     headers: {
       'X-BingApis-SDK': 'true',
@@ -14,32 +15,44 @@ async function searchNews(q, offset) {
       'X-RapidAPI-Host': 'bing-news-search1.p.rapidapi.com'
     }
   });
-  console.log(response);
   const body = await response.json();
   return body.value;
   }
-
-
+  
 export default function App() {
-  const [query, setQuery] = React.useState("cat");
+  const [query, setQuery] = React.useState("");
   const [list, setList] = React.useState(null);
   const [page, setPage] = React.useState("1");
   const [offset, setOffset] = React.useState(0);
-  const handleChange = e => setQuery(e.target.value);
+  const [time, setTime] = React.useState('');
+
+  const timeOptions = [
+    { key: 'any', text: 'Any Time', value: '' },
+    { key: 'day', text: 'Day', value: 'day' },
+    { key: 'week', text: 'Week', value: 'week' },
+    { key: 'month', text: 'Month', value: 'month' },
+  ];
+
+
+  const handleTime = (e, {value}) => setTime(value);
+
+  const handleChange = (e, {value}) => setQuery(value);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setPage(1)
     setOffset(0);
-    searchNews(query).then(setList);
+    searchNews(query, time, offset).then(setList);
   };
-  const handlePageChange = (e, { activePage }) => {
+  const handlePageChange = (e, { activePage }, ) => {
     e.preventDefault();
     let offset = (activePage - 1) * 10;
     setPage(activePage);
     setOffset(offset);
-    searchNews(query, offset).then(setList);
+    searchNews(query, time, offset).then(setList);
   }
-  console.log(list);
+
+
   return (
     <div className="app">
       <Container className='container'>
@@ -50,19 +63,30 @@ export default function App() {
             <Form onSubmit={handleSubmit} className="searchForm"> 
               <Form.Group>
                 <Form.Input 
-                  placeholder="Search News" 
+                  placeholder="Enter Search Term" 
                   value={query} 
-                  onChange={handleChange} 
+                  onChange={handleChange}
                 />  
+                <Form.Input
+                  control={Select}
+                  placeholder='Any Time'
+                  options={timeOptions}
+                  value={time}
+                  
+                  
+                  search
+                  searchInput={{ id: 'form-select-control-time' }}
+                  htmlFor='form-select-control-time'
+                  
+                  onChange={handleTime}
+                />
                 <Form.Button primary content='Search' className='button' />
-                
-              </Form.Group>  
+              </Form.Group>
             </Form>
+                
           </Segment>
           <Segment className="results">
-          
-              
-              
+
               {!list
                 ? null
                 : list.length === 0
@@ -71,8 +95,8 @@ export default function App() {
                 <>  
                 <span style={{paddingLeft:"10px"}}>Results {offset+1} - {offset+10}</span>
                 <List relaxed>
-                  {list.map(({ObjectId, ...props}) => (
-                    <Item key={ObjectId} {...props} />
+                  {list.map(({...props}) => (
+                    <Item key={props.id} {...props} />
                   ))}
                 </List>
                 <Pagination

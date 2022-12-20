@@ -9,11 +9,13 @@
   margin: 3em;
   position: absolute;
   top: 1em;
+  height: 1000px;
 }
 
 .container {
   margin: 1em auto 1em;
   overflow-y: scroll;
+  height: 100%;
 }
 .results {
   overflow-y: scroll;
